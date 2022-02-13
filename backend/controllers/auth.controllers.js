@@ -35,7 +35,14 @@ exports.signUp = (req, res, next) => {
           res.status(201).json({ message: "New user registered" });
           next();
         })
-        .catch((err) => res.status(400).json({ error: err }));
+        .catch((err) => {
+          if (err.errors.email.message.includes("unique")) {
+            return res
+              .status(400)
+              .json({ error: "This email is already in use" });
+          }
+          return res.status(400).json({ error: err });
+        });
     })
     .catch((err) => res.status(500).json({ error: err }));
 };
