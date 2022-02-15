@@ -212,3 +212,76 @@ exports.stopDislikePost = (req, res, next) => {
     })
     .catch((err) => res.status(500).json({ error: err }));
 };
+
+exports.commentPost = (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).send("Id unknown ");
+  }
+
+  Post.updateOne(
+    { _id: req.params.id },
+    {
+      $push: {
+        comments: {
+          commenterId: req.body.commenterId,
+          text: req.body.text,
+          timestamp: new Date().getTime(),
+        },
+      },
+    },
+    { new: true, upsert: true }
+  )
+    .then(() => {
+      res.status(200).json({ message: "New comment sucessfully added" });
+      next();
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+};
+
+exports.editCommentPost = (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).send("Id unknown ");
+  }
+
+  Post.updateOne(
+    {
+      _id: req.params.id,
+      "comments._id": req.body.commentId,
+    },
+    {
+      $set: {
+        "comments.$.text": req.body.text,
+      },
+    }
+  )
+    .then(() => {
+      res.status(200).json({ message: "Comment successfully modified" });
+      next();
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+};
+
+exports.deleteCommentPost = (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).send("Id unknown ");
+  }
+
+  Post.updateOne(
+    {
+      _id: req.params.id,
+    },
+    {
+      $pull: {
+        comments: {
+          _id: req.body.commentId,
+        },
+      },
+    },
+    { new: true, upsert: true }
+  )
+    .then(() => {
+      res.status(200).json({ message: "Comment successfully deleted" });
+      next();
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+};
