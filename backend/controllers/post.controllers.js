@@ -72,13 +72,10 @@ exports.likePost = (req, res, next) => {
 
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (
-        !post.likers.includes(req.body.id) &&
-        !post.dislikers.includes(req.body.id)
-      ) {
+      if (!post.dislikers.includes(req.body.id)) {
         Post.updateOne(
           { _id: req.params.id },
-          { $push: { likers: req.body.id } },
+          { $addToSet: { likers: req.body.id } },
           { new: true, upsert: true }
         )
           .then(() => {
@@ -90,7 +87,7 @@ exports.likePost = (req, res, next) => {
 
         User.updateOne(
           { _id: req.body.id },
-          { $push: { likes: req.params.id } },
+          { $addToSet: { likes: req.params.id } },
           { new: true, upsert: true }
         )
           .then(() => {
@@ -102,7 +99,7 @@ exports.likePost = (req, res, next) => {
       } else {
         return res
           .status(400)
-          .json({ message: "You have already liked or disliked this post" });
+          .json({ message: "You have already disliked this post" });
       }
     })
     .catch((err) => res.status(400).json({ error: err }));
@@ -145,13 +142,10 @@ exports.dislikePost = (req, res, next) => {
 
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (
-        !post.likers.includes(req.body.id) &&
-        !post.dislikers.includes(req.body.id)
-      ) {
+      if (!post.likers.includes(req.body.id)) {
         Post.updateOne(
           { _id: req.params.id },
-          { $push: { dislikers: req.body.id } },
+          { $addToSet: { dislikers: req.body.id } },
           { new: true, upsert: true }
         )
           .then(() => {
@@ -165,7 +159,7 @@ exports.dislikePost = (req, res, next) => {
 
         User.updateOne(
           { _id: req.body.id },
-          { $push: { dislikes: req.params.id } },
+          { $addToSet: { dislikes: req.params.id } },
           { new: true, upsert: true }
         )
           .then(() => {
@@ -177,7 +171,7 @@ exports.dislikePost = (req, res, next) => {
       } else {
         return res
           .status(400)
-          .json({ message: "You have already liked or disliked this post" });
+          .json({ message: "You have already liked this post" });
       }
     })
     .catch((err) => res.status(400).json({ error: err }));
