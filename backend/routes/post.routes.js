@@ -8,4 +8,9 @@ router.post("/", postController.createPost);
 router.put("/:id", postController.modifyPost);
 router.delete("/:id", postController.deletePost);
 
+router.patch("/like-post/:id", postController.likePost);
+router.patch("/stoplike-post/:id", postController.stopLikePost);
+router.patch("/dislike-post/:id", postController.dislikePost);
+router.patch("/stopdislike-post/:id", postController.stopDislikePost);
+
 module.exports = router;
