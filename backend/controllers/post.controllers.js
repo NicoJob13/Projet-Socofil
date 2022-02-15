@@ -5,6 +5,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.getPosts = (req, res, next) => {
   Post.find()
+    .sort({ createdAt: -1 })
     .then((posts) => {
       res.status(200).json(posts);
       next();
