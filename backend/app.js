@@ -7,6 +7,7 @@ require("./config/db");
 const app = express();
 
 const userRoutes = require("./routes/user.routes");
+const postRoutes = require("./routes/post.routes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -18,5 +19,6 @@ app.get("/jwtid", requireAuth, (req, res) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 module.exports = app;
