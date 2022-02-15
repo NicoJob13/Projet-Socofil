@@ -73,7 +73,7 @@ exports.followUser = (req, res, next) => {
     .then(() => {
       User.updateOne(
         { _id: req.params.id },
-        { $push: { following: req.body.idToFollow } },
+        { $addToSet: { following: req.body.idToFollow } },
         { new: true, upsert: true }
       )
         .then(() => {
@@ -86,7 +86,7 @@ exports.followUser = (req, res, next) => {
         .catch((err) => res.status(500).json({ error: err }));
       User.updateOne(
         { _id: req.body.idToFollow },
-        { $push: { followers: req.params.id } },
+        { $addToSet: { followers: req.params.id } },
         { new: true, upsert: true }
       )
         .then(() => {
