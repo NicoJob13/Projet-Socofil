@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 const { checkAuth, requireAuth } = require("./middleware/auth.middlewares");
 
 require("./config/db");
@@ -17,6 +18,8 @@ app.get("*", checkAuth);
 app.get("/jwtid", requireAuth, (req, res) => {
   res.status(200).send(res.locals.user._id);
 });
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
