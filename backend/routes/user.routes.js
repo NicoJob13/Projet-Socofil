@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("../controllers/auth.controllers");
 const userController = require("../controllers/user.controllers");
+const { uploadAvatar } = require("../middleware/multer.middlewares");
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.get("/signout", authController.signOut);
 
 router.get("/", userController.getAllUsers);
 router.get("/:id", userController.getOneUser);
-router.put("/:id", userController.updateUser);
+router.put("/:id", uploadAvatar, userController.updateUser);
 router.delete("/:id", userController.deleteUser);
 
 router.patch("/follow/:id", userController.followUser);

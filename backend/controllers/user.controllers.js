@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const User = require("../models/user.model");
 
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -31,11 +33,36 @@ exports.updateUser = (req, res, next) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(400).send("Id unknown : " + req.params.id);
   }
+
+  if (req.hasOwnProperty("fileFormat_error")) {
+    return res
+      .status(400)
+      .json({ error: "Only .png, .jpg and .jpeg format allowed !" });
+  }
+
   User.findOne({ _id: req.params.id })
-    .then(() => {
+    .then((user) => {
+      if (req.file && user.picture) {
+        const fileToDelete = user.picture.split("/uploads/avatars/")[1];
+        fs.unlink(`uploads/avatars/${fileToDelete}`, (err) => {
+          if (err) {
+            res.status(500).json({ error: err });
+          }
+        });
+      }
+
+      const userObject = req.file
+        ? {
+            ...req.body.user,
+            picture: `${req.protocol}://${req.get("host")}/uploads/avatars/${
+              req.file.filename
+            }`,
+          }
+        : { ...req.body };
+
       User.updateOne(
         { _id: req.params.id },
-        { ...req.body, _id: req.params.id }
+        { ...userObject, _id: req.params.id }
       )
         .then(() => {
           res.status(200).json({ message: "User modified" });
@@ -51,7 +78,16 @@ exports.deleteUser = (req, res, next) => {
     return res.status(400).send("Id unknown : " + req.params.id);
   }
   User.findOne({ _id: req.params.id })
-    .then(() => {
+    .then((user) => {
+      if (user.picture) {
+        const fileToDelete = user.picture.split("/uploads/avatars/")[1];
+        fs.unlink(`uploads/avatars/${fileToDelete}`, (err) => {
+          if (err) {
+            res.status(500).json({ error: err });
+          }
+        });
+      }
+
       User.deleteOne({ _id: req.params.id })
         .then(() => {
           res.status(200).json({ message: "User deleted" });
