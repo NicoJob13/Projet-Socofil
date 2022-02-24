@@ -1,11 +1,12 @@
 const express = require("express");
 const postController = require("../controllers/post.controllers");
+const { uploadImage } = require("../middleware/multer.middlewares");
 
 const router = express.Router();
 
 router.get("/", postController.getPosts);
-router.post("/", postController.createPost);
-router.put("/:id", postController.modifyPost);
+router.post("/", uploadImage, postController.createPost);
+router.put("/:id", uploadImage, postController.modifyPost);
 router.delete("/:id", postController.deletePost);
 
 router.patch("/like-post/:id", postController.likePost);

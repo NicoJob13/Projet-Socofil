@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const Post = require("../models/post.model");
 const User = require("../models/user.model");
 
@@ -16,9 +18,24 @@ exports.getPosts = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
-  const { posterId, message } = req.body;
+  if (req.hasOwnProperty("fileFormat_error")) {
+    return res
+      .status(400)
+      .json({ error: "Only .png, .jpg and .jpeg format allowed !" });
+  }
 
-  const post = new Post({ posterId, message });
+  const postObject = req.file
+    ? {
+        ...req.body,
+        picture: `${req.protocol}://${req.get("host")}/uploads/postimages/${
+          req.file.filename
+        }`,
+      }
+    : {
+        ...req.body,
+      };
+
+  const post = new Post({ ...postObject });
 
   post
     .save()
@@ -35,11 +52,38 @@ exports.modifyPost = (req, res, next) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(400).send("Id unknown : " + req.params.id);
   }
+
+  if (req.hasOwnProperty("fileFormat_error")) {
+    return res
+      .status(400)
+      .json({ error: "Only .png, .jpg and .jpeg format allowed !" });
+  }
+
   Post.findOne({ _id: req.params.id })
-    .then(() => {
+    .then((post) => {
+      if (req.file && post.picture) {
+        const fileToDelete = post.picture.split("/uploads/postimages/")[1];
+        fs.unlink(`uploads/postimages/${fileToDelete}`, (err) => {
+          if (err) {
+            res.status(500).json({ error: err });
+          }
+        });
+      }
+
+      const postObject = req.file
+        ? {
+            ...req.body,
+            picture: `${req.protocol}://${req.get("host")}/uploads/postimages/${
+              req.file.filename
+            }`,
+          }
+        : {
+            ...req.body,
+          };
+
       Post.updateOne(
         { _id: req.params.id },
-        { ...req.body, _id: req.params.id }
+        { ...postObject, _id: req.params.id }
       )
         .then(() => {
           res.status(200).json({ message: "Post modified" });
@@ -54,8 +98,18 @@ exports.deletePost = (req, res, next) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(400).send("Id unknown : " + req.params.id);
   }
+
   Post.findOne({ _id: req.params.id })
-    .then(() => {
+    .then((post) => {
+      if (post.picture) {
+        const fileToDelete = post.picture.split("/uploads/postimages/")[1];
+        fs.unlink(`uploads/postimages/${fileToDelete}`, (err) => {
+          if (err) {
+            res.status(500).json({ error: err });
+          }
+        });
+      }
+
       Post.deleteOne({ _id: req.params.id })
         .then(() => {
           res.status(200).json({ message: "Post deleted" });
