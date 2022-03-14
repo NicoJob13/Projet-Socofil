@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .authContainer {
+    @apply max-w-screen-md bg-green-100 rounded-md p-4 mx-auto mt-2 flex flex-col items-center;
+  }
+  .modalContainer {
+    @apply max-w-fit;
+  }
+  .modalButtonContainer {
+    @apply flex;
+  }
+  .formContainer {
+    @apply min-w-fit mx-auto mt-6 mb-2 px-8 py-2 border-2 border-green-600 rounded-md flex flex-col items-center;
+  }
+  .inputContainer {
+    @apply flex flex-col py-3;
+  }
+  .formInput {
+    @apply border-none rounded-md focus:ring-green-700;
+  }
+  .btn {
+    @apply w-36 font-bold py-2 mx-2 mt-2 mb-2 rounded hover:shadow-sm hover:cursor-pointer;
+  }
+  .btn-selector,
+  .btn-validation {
+    @apply bg-green-300 hover:bg-green-400 hover:shadow-green-900;
+  }
+  .btn-selector-active {
+    @apply bg-green-500;
+  }
+  .errorMessage {
+    @apply font-semibold text-red-700;
+  }
+}

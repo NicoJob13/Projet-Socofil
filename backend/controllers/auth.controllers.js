@@ -57,14 +57,14 @@ exports.signIn = (req, res, next) => {
   User.findOne({ email: encodedEmail })
     .then((user) => {
       if (!user) {
-        return res.status(401).json({ error: "User not found" });
+        return res.status(200).json({ error: "User not found" });
       }
 
       bcrypt
         .compare(password, user.password)
         .then((valid) => {
           if (!valid) {
-            return res.status(401).json({ error: "Incorrect password" });
+            return res.status(200).json({ error: "Incorrect password" });
           }
 
           const token = jwt.sign(
