@@ -19,7 +19,7 @@ const Auth = (props) => {
   return (
     <div>
       <div className="authContainer">
-        <div className="modalButtonContainer">
+        <div>
           <button
             id="signin"
             className={

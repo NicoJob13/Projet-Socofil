@@ -4,22 +4,22 @@
 
 @layer components {
   .authContainer {
-    @apply max-w-screen-md bg-green-100 rounded-md p-4 mx-auto mt-2 flex flex-col items-center;
-  }
-  .modalContainer {
-    @apply max-w-fit;
-  }
-  .modalButtonContainer {
-    @apply flex;
+    @apply max-w-screen-md bg-green-100 rounded-md pt-4 pb-2 mx-auto mt-2 flex flex-col items-center;
   }
   .formContainer {
-    @apply min-w-fit mx-auto mt-6 mb-2 px-8 py-2 border-2 border-green-600 rounded-md flex flex-col items-center;
+    @apply mt-3 mb-1 flex flex-col items-center;
   }
   .inputContainer {
-    @apply flex flex-col py-3;
+    @apply flex flex-col mt-3 mb-2;
+  }
+  .checkboxContainer {
+    @apply px-2 pt-3 pb-2 flex justify-between;
   }
   .formInput {
-    @apply border-none rounded-md focus:ring-green-700;
+    @apply w-72 border-none rounded-md focus:ring-green-700;
+  }
+  .checkbox {
+    @apply flex my-auto mx-2 border-green-700 text-green-700 focus:ring-offset-0 focus:ring-0 checked:bg-green-700;
   }
   .btn {
     @apply w-36 font-bold py-2 mx-2 mt-2 mb-2 rounded hover:shadow-sm hover:cursor-pointer;
@@ -31,7 +31,16 @@
   .btn-selector-active {
     @apply bg-green-500;
   }
+  .link {
+    @apply font-bold;
+  }
+  .acceptCGU {
+    @apply mx-1;
+  }
   .errorMessage {
     @apply font-semibold text-red-700;
+  }
+  .successMessage {
+    @apply pt-3 font-semibold text-emerald-600 focus:cursor-pointer;
   }
 }

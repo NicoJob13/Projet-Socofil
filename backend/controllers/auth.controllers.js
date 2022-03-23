@@ -9,10 +9,10 @@ exports.signUp = (req, res, next) => {
   const { firstname, lastname, site, job, email, password } = req.body;
 
   if (!validator.isEmail(email)) {
-    return res.status(400).json({ error: "Invalid email" });
+    return res.status(200).json({ error: "Invalid email" });
   }
   if (!validator.isStrongPassword(password)) {
-    return res.status(400).json({ error: "Invalid password" });
+    return res.status(200).json({ error: "Invalid password" });
   }
 
   const encodedEmail = cryptojs.enc.Base64.stringify(
@@ -38,7 +38,7 @@ exports.signUp = (req, res, next) => {
         .catch((err) => {
           if (err.errors.email.message.includes("unique")) {
             return res
-              .status(400)
+              .status(200)
               .json({ error: "This email is already in use" });
           }
           return res.status(400).json({ error: err });

@@ -28,9 +28,11 @@ const SignInForm = () => {
         } else {
           if (res.data.error.includes("User not found")) {
             emailError.textContent = "Utilisateur inconnu";
+            console.log("Utilisateur inconnu");
           }
           if (res.data.error.includes("Incorrect password")) {
             passwordError.textContent = "Mot de passe incorrect";
+            console.log("Mot de passe incorrect");
           }
         }
       })
@@ -53,7 +55,7 @@ const SignInForm = () => {
           id="email"
           type="email"
           name="email"
-          title="Votre adresse email respectant le format 'exemple@mail.com'"
+          title='Votre adresse email respectant le format "exemple@mail.com"'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -72,11 +74,13 @@ const SignInForm = () => {
         />
       </div>
       <div id="passwordError" className="errorMessage"></div>
-      <input
-        className="btn btn-validation"
-        type="submit"
-        value="Se connecter"
-      />
+      <div className="inputContainer">
+        <input
+          className="btn btn-validation"
+          type="submit"
+          value="Se connecter"
+        />
+      </div>
     </form>
   );
 };
