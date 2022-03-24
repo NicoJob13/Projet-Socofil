@@ -3,8 +3,23 @@
 @tailwind utilities;
 
 @layer components {
-  .authContainer {
+  .headerContainer {
+    @apply max-w-screen-lg h-auto mx-auto px-1 py-2 bg-green-100 rounded-b-md;
+  }
+  .navbarContainer {
+    @apply max-w-screen-lg mx-auto flex justify-between;
+  }
+  .linksContainer {
+    @apply flex justify-evenly;
+  }
+  .welcomeContainer {
+    @apply px-3 flex font-semibold;
+  }
+  .authContainer,
+  .createPostContainer {
     @apply max-w-screen-md bg-green-100 rounded-md pt-4 pb-2 mx-auto mt-2 flex flex-col items-center;
+  }
+  .threadContainer {
   }
   .formContainer {
     @apply mt-3 mb-1 flex flex-col items-center;
@@ -20,6 +35,9 @@
   }
   .checkbox {
     @apply flex my-auto mx-2 border-green-700 text-green-700 focus:ring-offset-0 focus:ring-0 checked:bg-green-700;
+  }
+  .icon {
+    @apply w-7 h-7 mx-2 flex text-green-900 hover:cursor-pointer;
   }
   .btn {
     @apply w-36 font-bold py-2 mx-2 mt-2 mb-2 rounded hover:shadow-sm hover:cursor-pointer;
