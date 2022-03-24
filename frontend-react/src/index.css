@@ -9,8 +9,11 @@
   .navbarContainer {
     @apply max-w-screen-lg mx-auto flex justify-between;
   }
+  .logoContainer {
+    @apply w-auto h-20 ml-2 flex justify-between;
+  }
   .linksContainer {
-    @apply flex justify-evenly;
+    @apply flex justify-evenly items-center;
   }
   .welcomeContainer {
     @apply px-3 flex font-semibold;
@@ -35,6 +38,12 @@
   }
   .checkbox {
     @apply flex my-auto mx-2 border-green-700 text-green-700 focus:ring-offset-0 focus:ring-0 checked:bg-green-700;
+  }
+  .siteLogo {
+    @apply flex items-center object-cover;
+  }
+  .siteName {
+    @apply pl-2 flex items-center text-xl font-bold italic;
   }
   .icon {
     @apply w-7 h-7 mx-2 flex text-green-900 hover:cursor-pointer;

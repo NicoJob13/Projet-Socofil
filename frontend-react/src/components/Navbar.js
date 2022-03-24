@@ -11,12 +11,13 @@ const Navbar = () => {
     <nav>
       <div className="navbarContainer">
         <NavLink exact to="/">
-          <div>
+          <div className="logoContainer">
             <img
-              className="logo"
-              src=""
+              className="siteLogo"
+              src="./images/logo.png"
               alt="Logos des établissements de SO.CO.FI"
             />
+            <div className="siteName">So.Co.Fi...l</div>
           </div>
         </NavLink>
         {uid && (
