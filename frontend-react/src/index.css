@@ -43,7 +43,7 @@
     @apply flex items-center object-cover;
   }
   .siteName {
-    @apply pl-2 flex items-center text-xl font-bold italic;
+    @apply pl-2 flex items-center font-semibold text-3xl italic;
   }
   .icon {
     @apply w-7 h-7 mx-2 flex text-green-900 hover:cursor-pointer;

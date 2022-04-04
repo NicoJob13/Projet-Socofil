@@ -7,6 +7,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 exports.getAllUsers = (req, res, next) => {
   User.find()
     .select("-password")
+    .select("-email")
     .then((users) => {
       res.status(200).json(users);
       next();
@@ -22,11 +23,14 @@ exports.getOneUser = (req, res, next) => {
   }
   User.findOne({ _id: req.params.id })
     .select("-password")
+    .select("-email")
     .then((user) => {
       res.status(200).json(user);
       next();
     })
-    .catch((err) => res.status(404).json({ error: err }));
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
 };
 
 exports.updateUser = (req, res, next) => {

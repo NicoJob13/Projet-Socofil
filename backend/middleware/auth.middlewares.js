@@ -10,20 +10,24 @@ exports.checkAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decodedToken) => {
       if (err) {
+        console.log(err);
         res.locals.user = null;
-        res.status(400).json({ error: err });
+        res.status(400).json("Authentication error : invalid token");
       } else {
         User.findById(decodedToken.userId)
           .then((user) => {
             res.locals.user = user;
             next();
           })
-          .catch((err) => res.status(400).json({ error: err }));
+          .catch((err) => {
+            res.status(400).json({ error: err });
+          });
       }
     });
   } else {
+    console.log("Authentication error : No token found");
     res.locals.user = null;
-    res.status(400).json("Authentication error : no token found");
+    res.status(400).json("Authentication error : No token found");
   }
 };
 
@@ -33,13 +37,15 @@ exports.requireAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decodedToken) => {
       if (err) {
-        res.status(400).json({ error: err });
+        console.log(err);
+        res.status(400).json("Authentication error : invalid token");
       } else {
-        console.log(decodedToken.userId);
+        console.log(decodedToken.userId + " is logged");
         next();
       }
     });
   } else {
-    res.status(400).json("Authentication error : no token found");
+    console.log("Authentication error : No token found");
+    res.status(400).json("Authentication error : No token found");
   }
 };
